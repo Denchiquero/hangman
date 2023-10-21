@@ -183,11 +183,14 @@ def hangmaneng():
             print('Here is your alphabet:', ' '.join(alphabet))
     answer = input('Do you want to play one more time?(yes/no)')
 
+def main():
+    print("""HANGMAN.PY ver. 1.3
+    \U000000A9 Denis Krutov. All rights reversed""")
 
-print("""HANGMAN.PY ver. 1.3
-\U000000A9 Denis Krutov. All rights reversed""")
+    answer = ''
+    games = 0
 
-answer = ''
-games = 0
-
-language()
+    language()
+    
+if __name__ == "__main__":
+	main()
