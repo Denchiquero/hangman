@@ -1,5 +1,6 @@
 import random
 
+rus_dict = {}
 
 def language():
     lan = input("""\nPlease select game language
@@ -68,10 +69,9 @@ def hang():
 / \\""")
 
 
-wordlist1 = ['нега', 'улов', 'агат', 'кот', 'лом', 'уха', 'ключ', 'кит', 'тон', 'вдох']
-wordlist2 = ['молоко', 'метанол', 'курага', 'фиаско', 'облако', 'забота', 'деньги', 'йогурт', 'задача', 'физика']
-wordlist3 = ['компьютер', 'уравнение', 'алгоритм', 'диффузия', 'коррозия', 'клавиатура', 'заклинание', 'картофель',
-             'мацерация', 'программирование']
+wordlist1 = [
+wordlist2 = 
+wordlist3 = 
 wordlist4 = ['bed', 'cat', 'egg', 'room', 'son', 'han', 'wine', 'song', 'pen', 'cup']
 wordlist5 = ['carpet', 'amigo', 'mother', 'apple', 'window', 'clock', 'potato', 'school', 'rubber', 'tender']
 wordlist6 = ['wardrobe', 'percent', 'snowfall', 'chemistry', 'happiness', 'pudding', 'bathroom', 'doorbell',
