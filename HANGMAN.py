@@ -140,8 +140,8 @@ def hangman():
                 case 0:
                     hang()
                     print(f'{dict_lan['game_over']}', secret)
-                case _:
-                    print(f'{dict_lan['used']}', ' '.join(alphabet))
+        else:
+            print(f'{dict_lan['used']}', ' '.join(alphabet))
 
     answer = input(f'{dict_lan['one_more']}')
 
