@@ -1,63 +1,105 @@
 import random
+import os
+
+file_txt = open('C:\\Program Files (x86)\\Hangman\\dict.txt', 'r', encoding="utf-8")
+dictionary = file_txt.read().split()
+
+rus_lan = ['Русский', 'русский', 'Heccrbq', 'heccrbq']
+eng_lan = ['English', 'english', 'Утпдшыр', 'утпдшыр']
+
+wordlist_1 = []
+wordlist_2 = []
+wordlist_3 = []
+
+rus_dict = {'welcome_word': """Привет! Добро пожаловать в игру Виселица!
+Правила просты: я загадал слово, а ты должен его угадать.
+Но учти, что за каждой ошибкой следует наказание!
+У тебя будет 9 попыток. По истечении их запаса тебя повесят) 
+Желаю тебе удачи!""",
+            'wordlist_1': wordlist_1,
+            'wordlist_2': wordlist_2,
+            'wordlist_3': wordlist_3,
+            'choose_lev': 'Выбери уровень игры: 1, 2, 3',
+            'hello_again': ['Что ж, еще разок!', 'Заново!', 'На спавн!', 'Ах щит! Хи ви го эгейн!'],
+            'not_guess': ['Неее', 'Неверно', 'А подумать?'],
+            'guessed': ['Правильно!', 'Так держать!', 'Молодец!', 'Ты угадал!', 'В точку!'],
+            'happy': 'О! Рад видеть тебя снова!',
+            'you_won': '\nТы выиграл!',
+            'call_a_letter': '\n\nНазови букву: ',
+            'turns_left': 'Осталось попыток: ',
+            'used': 'Использованные буквы: ',
+            'game_over': '\n\nТы проиграл! Это слово: ',
+            'one_more': 'Сыграем еще раз?(да/нет)',
+            'again': ['да', 'Да', 'ДА', 'if', 'If', 'IF'],
+            'already_used': 'Вы уже использовали эту букву. Попробуйте другую'
+            }
+
+eng_dict = {'welcome_word': """Hello! Welcome to Hangman game!
+The rules are simple: I have thought of a word and you have to guess it.
+But remember that for every mistake you get a punishment!
+You have 5 attempts. When they are over, you will be hanged) 
+Good luck!""",
+            'wordlist_1': ['bed', 'cat', 'egg', 'room', 'son', 'han', 'wine', 'song', 'pen', 'cup'],
+            'wordlist_2': ['carpet', 'amigo', 'mother', 'apple', 'window', 'clock', 'potato', 'school', 'rubber',
+                           'tender'],
+            'wordlist_3': ['wardrobe', 'percent', 'snowfall', 'chemistry', 'happiness', 'pudding', 'bathroom',
+                           'doorbell', 'grandfather', 'relaxation'],
+            'choose_lev': 'Choose game level: 1, 2, 3',
+            'hello_again': ['Well, one more time!', 'Again!', 'To the spawn!', 'Oh shit! Here we go again!'],
+            'not_guessed': ['Nooo', 'Wrong', 'How about thinking?'],
+            'guessed': ['Right!', 'Keep it up!', 'Well done!', 'You guessed!', 'Exactly!'],
+            'happy': 'Wow! glad to see you again!',
+            'you_won': '\nYou win!',
+            'call_a_letter': '\n\nName a letter: ',
+            'turns_left': 'Turns left: ',
+            'used': 'Used letters: ',
+            'game_over': '\n\nGame over! The word is: ',
+            'one_more': 'Do you wanna play one more time?(yes/no)',
+            'again': ['yes', 'Yes', 'YES', 'нуы', 'Нуы', 'НУЫ'],
+            'already_used': 'You have already used this letter. Try another one'
+            }
+
+
+def sortirovka():
+    for i in dictionary:
+        match len(i):
+            case 3|4|5:
+                wordlist_1.append(i)
+            case 6|7|8:
+                wordlist_2.append(i)
+            case 9|10|11|12|13|14|15|16|17|18:
+                wordlist_3.append(i)
 
 
 def language():
+    global dict_lan
     lan = input("""\nPlease select game language
 Пожалуйста, выберите язык игры
 (English/Русский)\n""")
 
-    if lan == 'English':
-        print("""Hello! Welcome to Hangman game!
-The rules are simple: I have thought of a word and you have to guess it.
-But remember that for every mistake you get a punishment!
-You have 5 attempts. When they are over, you will be hanged) 
-Good luck!""")
-        hangmaneng()
-        while answer == 'yes':
-            changelan = input('Do you want to change language?(yes/no)')
-            if changelan == 'yes':
-                hangmanrus()
-            else:
-                hangmaneng()
-        else:
-            print('Bye!')
+    dict_lan = selected_language(lan)
 
-    elif lan == 'Русский':
-        print("""Привет! Добро пожаловать в игру Виселица!
-Правила просты: я загадал слово, а ты должен его угадать.
-Но учти, что за каждой ошибкой следует наказание!
-У тебя будет 9 попыток. По истечении их запаса тебя повесят) 
-Желаю тебе удачи!""")
-        hangmanrus()
-        while answer == 'да':
-            changelan = input('Хочешь поменять язык?(да/нет)')
-            if changelan == 'да':
-                hangmaneng()
-            else:
-                hangmanrus()
-        else:
-            print('Пока!')
-    else:
-        print("""Sorry, this game doesn't support this language
-Простите, эта игра не поддерживает этот язык""")
+    hangman()
+
+    while answer in dict_lan['again']:
+        hangman()
+
+
+def selected_language(lan):
+    if lan in rus_lan:
+        return rus_dict
+    elif lan in eng_lan:
+        return eng_dict
 
 
 def level(lev):
+    sortirovka()
     if lev == '1':
-        return wordlist1
+        return dict_lan['wordlist_1']
     if lev == '2':
-        return wordlist2
+        return dict_lan['wordlist_2']
     if lev == '3':
-        return wordlist3
-
-
-def leveleng(lev):
-    if lev == '1':
-        return wordlist4
-    if lev == '2':
-        return wordlist5
-    if lev == '3':
-        return wordlist6
+        return dict_lan['wordlist_3']
 
 
 def hang():
@@ -68,126 +110,92 @@ def hang():
 / \\""")
 
 
-wordlist1 = ['нега', 'улов', 'агат', 'кот', 'лом', 'уха', 'ключ', 'кит', 'тон', 'вдох']
-wordlist2 = ['молоко', 'метанол', 'курага', 'фиаско', 'облако', 'забота', 'деньги', 'йогурт', 'задача', 'физика']
-wordlist3 = ['компьютер', 'уравнение', 'алгоритм', 'диффузия', 'коррозия', 'клавиатура', 'заклинание', 'картофель',
-             'мацерация', 'программирование']
-wordlist4 = ['bed', 'cat', 'egg', 'room', 'son', 'han', 'wine', 'song', 'pen', 'cup']
-wordlist5 = ['carpet', 'amigo', 'mother', 'apple', 'window', 'clock', 'potato', 'school', 'rubber', 'tender']
-wordlist6 = ['wardrobe', 'percent', 'snowfall', 'chemistry', 'happiness', 'pudding', 'bathroom', 'doorbell',
-             'grandfather', 'relaxation']
+def man():
+    global word, turns
+    match turns:
+        case 8:
+            print('\n | ')
+        case 7:
+            print(' |\n\U0001F642 ')
+        case 6:
+            print(' |\n\U0001F610 \n |')
+        case 5:
+            print(' |\n\U0001F62C \n | \n |')
+        case 4:
+            print(' |\n\U0001F61E \n | \n | \n/')
+        case 3:
+            print(' |\n\U0001F974 \n | \n | \n/ \\')
+        case 2:
+            print(' |\n\U0001F628 \n/| \n | \n/ \\')
+        case 1:
+            print(' |\n\U0001F628 \n/|\\ \n | \n/ \\')
+        case 0:
+            hang()
+            print(f'{dict_lan['game_over']}', word)
 
 
-def hangmanrus():
-    global games
-    global answer
-    global changelan
+def hangman():
+    global games, answer, turns, word
     games += 1
     if games == 2:
-        print('О! Рад видеть тебя снова!')
-    elif games == 3:
-        print('Что ж, еще разок!')
-    elif games > 3:
-        print('Заново!')
-    lev = input('Выбери уровень игры: 1, 2, 3\n')
+        print(f'{dict_lan['happy']}')
+    elif games >= 3:
+        print(f'{random.choice(dict_lan['hello_again'])}')
+    lev = input(f'{dict_lan['choose_lev']}\n')
     wordlist = level(lev)
+    word = random.choice(wordlist)
     alphabet = []
-    secret = random.choice(wordlist)
     guesses = ''
+    os.system('cls||clear')
     turns = 9
     while turns > 0:
         missed = 0
-        for letter in secret:
+        for letter in word:
             if letter in guesses:
                 print(letter, end=' ')
             else:
                 print('_', end=' ')
                 missed += 1
         if missed == 0:
-            print('\nТы выиграл!')
+            print(f'{dict_lan['you_won']}')
             break
-        guess = input('\n\nНазови букву: ')
-        alphabet.append(guess)
-        guesses += guess
-        if guess not in secret:
-            turns -= 1
-            print('\nНе угадал.')
-            print('Осталось попыток: ', turns)
-            print('Использованные буквы:', ' '.join(alphabet))
-            if turns == 8: print('\n | ')
-            if turns == 7: print(' |\n\U0001F642 ')
-            if turns == 6: print(' |\n\U0001F610 \n |')
-            if turns == 5: print(' |\n\U0001F62C \n | \n |')
-            if turns == 4: print(' |\n\U0001F61E \n | \n | \n/')
-            if turns == 3: print(' |\n\U0001F974 \n | \n | \n/ \\')
-            if turns == 2: print(' |\n\U0001F628 \n/| \n | \n/ \\')
-            if turns == 1: print(' |\n\U0001F628 \n/|\\ \n | \n/ \\')
-            if turns == 0: hang()
-            if turns == 0: print('\n\nТы проиграл! Это слово: ', secret)
-        else:
-            print('Использованные буквы:', ' '.join(alphabet))
-
-    answer = input('Сыграем еще раз?(да/нет)')
-
-
-def hangmaneng():
-    global games
-    global answer
-    global changelan
-    games += 1
-    if games == 2:
-        print('Wow! Glad to see you again!')
-    elif games == 3:
-        print('Well, one more time!')
-    elif games > 3:
-        print('Again!')
-    lev = input('Choose your level: 1, 2, 3\n')
-    wordlist = leveleng(lev)
-    alphabet = []
-    secret = random.choice(wordlist)
-    guesses = ''
-    turns = 9
-    while turns > 0:
-        missed = 0
-        for letter in secret:
-            if letter in guesses:
-                print(letter, end=' ')
+        guess = input(f'{dict_lan['call_a_letter']}')
+        os.system('cls||clear')
+        if guess not in guesses:
+            guesses += guess
+            alphabet.append(guess)
+            if guess not in word:
+                turns -= 1
+                print(f'{random.choice(dict_lan['not_guess'])}')
+                print(f'{dict_lan['turns_left']}', turns)
+                print(f'{dict_lan['used']}', ' '.join(alphabet))
+                man()
             else:
-                print('_', end=' ')
-                missed += 1
-        if missed == 0:
-            print('\nYou win!')
-            break
-        guess = input('\n\nGuess a letter: ')
-
-        alphabet.append(guess)
-
-        guesses += guess
-
-        if guess not in secret:
-            turns -= 1
-            print('\nNope.')
-            print('Attempts left: ', turns)
-            print('Used letters:', ' '.join(alphabet))
-            if turns == 8: print('\n | ')
-            if turns == 7: print(' |\n\U0001F642 ')
-            if turns == 6: print(' |\n\U0001F610 \n |')
-            if turns == 5: print(' |\n\U0001F62C \n | \n |')
-            if turns == 4: print(' |\n\U0001F61E \n | \n | \n/')
-            if turns == 3: print(' |\n\U0001F974 \n | \n | \n/ \\')
-            if turns == 2: print(' |\n\U0001F628 \n/| \n | \n/ \\')
-            if turns == 1: print(' |\n\U0001F628 \n/|\\ \n | \n/ \\')
-            if turns == 0: hang()
-            if turns == 0: print('\n\nGame over! The word is: ', secret)
+                print(f'{random.choice(dict_lan['guessed'])}')
+                print(f'{dict_lan['turns_left']}', turns)
+                print(f'{dict_lan['used']}', ' '.join(alphabet))
+                man()
         else:
-            print('Here is your alphabet:', ' '.join(alphabet))
-    answer = input('Do you want to play one more time?(yes/no)')
+            print(f'{dict_lan['already_used']}')
+            print(f'{dict_lan['turns_left']}', turns)
+            print(f'{dict_lan['used']}', ' '.join(alphabet))
+            man()
 
+    answer = input(f'{dict_lan['one_more']}')
 
-print("""HANGMAN.PY ver. 1.3
-\U000000A9 Denis Krutov. All rights reversed""")
 
 answer = ''
 games = 0
+dict_lan = {}
+word = ''
+turns = 0
 
-language()
+
+def main():
+    print('HANGMAN.PY ver. 1.6 \n\U000000A9 Denis Krutov. All rights reversed')
+
+    language()
+
+
+if __name__ == "__main__":
+    main()
