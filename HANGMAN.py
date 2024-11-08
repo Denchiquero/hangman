@@ -1,8 +1,8 @@
 import random
 import os
 
-file_txt = open('C:\\Program Files (x86)\\Hangman\\dict.txt', 'r', encoding="utf-8")
-dictionary = file_txt.read().split()
+rus_txt = open('dict.txt', 'r', encoding="utf-8")
+eng_txt = open('engwords.txt', 'r', encoding="utf-8")
 
 rus_lan = ['Русский', 'русский', 'Heccrbq', 'heccrbq']
 eng_lan = ['English', 'english', 'Утпдшыр', 'утпдшыр']
@@ -31,7 +31,8 @@ rus_dict = {'welcome_word': """Привет! Добро пожаловать в 
             'game_over': '\n\nТы проиграл! Это слово: ',
             'one_more': 'Сыграем еще раз?(да/нет)',
             'again': ['да', 'Да', 'ДА', 'if', 'If', 'IF'],
-            'already_used': 'Вы уже использовали эту букву. Попробуйте другую'
+            'already_used': 'Вы уже использовали эту букву. Попробуйте другую',
+            'scored' : 'Вы набрали: '
             }
 
 eng_dict = {'welcome_word': """Hello! Welcome to Hangman game!
@@ -46,17 +47,18 @@ Good luck!""",
                            'doorbell', 'grandfather', 'relaxation'],
             'choose_lev': 'Choose game level: 1, 2, 3',
             'hello_again': ['Well, one more time!', 'Again!', 'To the spawn!', 'Oh shit! Here we go again!'],
-            'not_guessed': ['Nooo', 'Wrong', 'How about thinking?'],
+            'not_guess': ['Nooo', 'Wrong', 'How about thinking?'],
             'guessed': ['Right!', 'Keep it up!', 'Well done!', 'You guessed!', 'Exactly!'],
             'happy': 'Wow! glad to see you again!',
-            'you_won': '\nYou win!',
+            'you_won': '\n\nYou win!',
             'call_a_letter': '\n\nName a letter: ',
             'turns_left': 'Turns left: ',
             'used': 'Used letters: ',
             'game_over': '\n\nGame over! The word is: ',
             'one_more': 'Do you wanna play one more time?(yes/no)',
             'again': ['yes', 'Yes', 'YES', 'нуы', 'Нуы', 'НУЫ'],
-            'already_used': 'You have already used this letter. Try another one'
+            'already_used': 'You have already used this letter. Try another one',
+            'scored' : 'You scored: '
             }
 
 
@@ -65,9 +67,9 @@ def sortirovka():
         match len(i):
             case 3|4|5:
                 wordlist_1.append(i)
-            case 6|7|8:
+            case 6|7|8|9:
                 wordlist_2.append(i)
-            case 9|10|11|12|13|14|15|16|17|18:
+            case 10|11|12|13|14|15|16|17|18:
                 wordlist_3.append(i)
 
 
@@ -86,9 +88,12 @@ def language():
 
 
 def selected_language(lan):
+    global dictionary
     if lan in rus_lan:
+        dictionary = rus_txt.read().split()
         return rus_dict
     elif lan in eng_lan:
+        dictionary = eng_txt.read().split()
         return eng_dict
 
 
@@ -132,10 +137,11 @@ def man():
         case 0:
             hang()
             print(f'{dict_lan['game_over']}', word)
+            print(f'{dict_lan['scored']}', score)
 
 
 def hangman():
-    global games, answer, turns, word
+    global games, answer, turns, word, score
     games += 1
     if games == 2:
         print(f'{dict_lan['happy']}')
@@ -158,6 +164,7 @@ def hangman():
                 missed += 1
         if missed == 0:
             print(f'{dict_lan['you_won']}')
+            score += 1
             break
         guess = input(f'{dict_lan['call_a_letter']}')
         os.system('cls||clear')
@@ -189,10 +196,11 @@ games = 0
 dict_lan = {}
 word = ''
 turns = 0
+score = 0
 
 
 def main():
-    print('HANGMAN.PY ver. 1.6 \n\U000000A9 Denis Krutov. All rights reversed')
+    print('HANGMAN.PY ver. 1.7 \n\U000000A9 Denis Krutov. All rights reversed')
 
     language()
 
